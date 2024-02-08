@@ -5,8 +5,8 @@ import MoviesPage from "../Pages/MoviesPage";
 import MovieDetailsPage from "../Pages/MovieDetailsPage";
 import NotFoundPage from "../Pages/NotFoundPage";
 import NavBar from "./NavBar/NavBar";
-import Cast from "./Cast";
-import Reviews from "./Reviews";
+import Cast from "./Cast/Cast";
+import Reviews from "./Reviews/Reviews";
 import { Toaster } from "react-hot-toast";
 
 function App() {

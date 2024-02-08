@@ -8,7 +8,7 @@ const buildLinkClass = ({ isActive }) => {
 
 export default function Navbar() {
   return (
-    <header>
+    <header className={css.header}>
       <nav className={css.nav}>
         <NavLink to="/" className={buildLinkClass}>
           Home

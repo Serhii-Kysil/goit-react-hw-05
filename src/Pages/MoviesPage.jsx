@@ -1,45 +1,59 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import toast from "react-hot-toast";
+import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
+import SearchForm from "../Components/SearchForm/SearchForm";
+import { Loader } from "../Components/Loader/Loader";
+import { SearchList } from "../Components/SearchList/SearchList";
 import { searchMoviesByKeyword } from "../Api";
+import { ErrorMessage } from "../Components/ErrorMessage/ErrorMessage";
 
 const MoviesPage = () => {
-  const [keyword, setKeyword] = useState("");
   const [searchResults, setSearchResults] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const location = useLocation();
+  const [error, setError] = useState(false);
+  const controller = new AbortController();
 
-  const handleSearch = async (e) => {
-    e.preventDefault();
-    if (e.target.elements.query.value.trim() === "") {
-      toast.error("EMPTY STRING!");
-      return;
-    }
-    try {
-      const response = await searchMoviesByKeyword({ keyword });
-      setSearchResults(response);
-    } catch (error) {
-      console.error("Error searching movies:", error);
-    }
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const query = searchParams.get("query");
+
+    const fetchSearchResults = async () => {
+      if (query) {
+        setLoading(true);
+        try {
+          setError(false);
+          const response = await searchMoviesByKeyword({
+            keyword: query,
+            abortController: controller,
+          });
+          setSearchResults(response);
+        } catch (error) {
+          if (error.code !== "ERR_CANCELED") {
+            setError(true);
+          }
+        } finally {
+          setLoading(false);
+        }
+      }
+    };
+
+    fetchSearchResults();
+    return () => {
+      controller.abort();
+    };
+  }, [location.search]);
+
+  const handleSearchResult = (results) => {
+    setSearchResults(results);
+    setLoading(false);
   };
 
   return (
     <div>
-      <form onSubmit={handleSearch}>
-        <input
-          name="query"
-          type="text"
-          value={keyword}
-          onChange={(e) => setKeyword(e.target.value)}
-          placeholder="Enter keyword"
-        />
-        <button type="submit">Search</button>
-      </form>
-      <ul>
-        {searchResults.map((movie) => (
-          <li key={movie.id}>
-            <Link to={`/movies/${movie.id}`}>{movie.title}</Link>
-          </li>
-        ))}
-      </ul>
+      {error && <ErrorMessage />}
+      <SearchForm onSubmit={handleSearchResult} />
+      {loading && <Loader />}
+      <SearchList searchResults={searchResults} />
     </div>
   );
 };

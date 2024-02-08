@@ -1,16 +1,24 @@
 import { useEffect, useState } from "react";
-import { useParams, Link, Outlet } from "react-router-dom";
+import { useParams, Outlet } from "react-router-dom";
 import { getMovieById } from "../Api";
+import { ErrorMessage } from "../Components/ErrorMessage/ErrorMessage";
+import { Loader } from "../Components/Loader/Loader";
+import HomePageBtn from "../Components/HomePageBtn/HomePageBtn";
+import { MovieCard } from "../Components/MovieCard/MovieCard";
+import { AdditionalInfo } from "../Components/AdditionalInfo/AdditionalInfo";
 
 export default function MovieDetailsPage() {
   const { movieId } = useParams();
   const [movie, setMovie] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
   useEffect(() => {
     const controller = new AbortController();
     async function fetchData() {
       try {
+        setLoading(true);
+        setError(false);
         const fetchedMovie = await getMovieById({
           abortController: controller,
           movieId,
@@ -20,6 +28,8 @@ export default function MovieDetailsPage() {
         if (error.code !== "ERR_CANCELED") {
           setError(true);
         }
+      } finally {
+        setLoading(false);
       }
     }
     fetchData();
@@ -30,28 +40,16 @@ export default function MovieDetailsPage() {
 
   return (
     <div>
-      {error && <p>Error</p>}
+      {error && <ErrorMessage />}
+      {loading && <Loader />}
       {movie && (
         <div>
-          <Link to="/">Back to home page</Link>
-          <img
-            src={`https://image.tmdb.org/t/p/w500${movie.backdrop_path}`}
-            alt="Movie backdrop"
-          />
-          <div>
-            <p>
-              {movie.title}({movie.release_date.slice(0, 4)})
-            </p>
-            <p>Movie Popularity: {movie.popularity.toFixed(1)}%</p>
-            <p>Overview</p>
-            <p>{movie.overview}</p>
-            <p>Genres</p>
-            <p>{movie.genres.map((item) => item.name).join(", ")}</p>
-          </div>
-          <div>
-            <Link to="cast">Cast</Link>
-            <Link to="reviews">Reviews</Link>
-          </div>
+          <HomePageBtn />
+
+          <MovieCard movie={movie} />
+
+          <AdditionalInfo />
+
           <Outlet movieId={movieId} />
         </div>
       )}

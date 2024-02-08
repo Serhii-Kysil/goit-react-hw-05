@@ -11,11 +11,12 @@ export const getPopular = async ({ abortController }) => {
     },
     signal: abortController.signal,
   });
+  console.log(response.data.results);
   return response.data.results;
 };
 getPopular();
 
-export const getMovieById = async ({ movieId }) => {
+export const getMovieById = async ({ movieId, abortController }) => {
   const response = await axios.get(
     `https://api.themoviedb.org/3/movie/${movieId}`,
     {
@@ -23,12 +24,13 @@ export const getMovieById = async ({ movieId }) => {
         Authorization:
           "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmNzFkYzIxMmU5YTQ3MTE1YjMwZWRkM2RmMDgyNTM2MCIsInN1YiI6IjY1YzQwN2M4NzA2YjlmMDE3ZDJkNGRmZSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.9VC-s9dnO0bUB9BPpss1H3XXJtjEBTVo17HOPZThY20",
       },
+      signal: abortController.signal,
     }
   );
+  console.log(response.data);
   return response.data;
 };
-
-export const getMovieCast = async ({ movieId }) => {
+export const getMovieCast = async ({ movieId, abortController }) => {
   const response = await axios.get(
     `https://api.themoviedb.org/3/movie/${movieId}/credits`,
     {
@@ -36,13 +38,14 @@ export const getMovieCast = async ({ movieId }) => {
         Authorization:
           "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmNzFkYzIxMmU5YTQ3MTE1YjMwZWRkM2RmMDgyNTM2MCIsInN1YiI6IjY1YzQwN2M4NzA2YjlmMDE3ZDJkNGRmZSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.9VC-s9dnO0bUB9BPpss1H3XXJtjEBTVo17HOPZThY20",
       },
+      signal: abortController.signal,
     }
   );
   console.log(response.data.cast);
   return response.data.cast;
 };
 
-export const getMovieReviews = async ({ movieId }) => {
+export const getMovieReviews = async ({ movieId, abortController }) => {
   const response = await axios.get(
     `https://api.themoviedb.org/3/movie/${movieId}/reviews`,
     {
@@ -50,13 +53,14 @@ export const getMovieReviews = async ({ movieId }) => {
         Authorization:
           "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmNzFkYzIxMmU5YTQ3MTE1YjMwZWRkM2RmMDgyNTM2MCIsInN1YiI6IjY1YzQwN2M4NzA2YjlmMDE3ZDJkNGRmZSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.9VC-s9dnO0bUB9BPpss1H3XXJtjEBTVo17HOPZThY20",
       },
+      signal: abortController.signal,
     }
   );
-
+  console.log(response.data.results);
   return response.data.results;
 };
 
-export const searchMoviesByKeyword = async ({ keyword }) => {
+export const searchMoviesByKeyword = async ({ keyword, abortController }) => {
   const response = await axios.get(
     `https://api.themoviedb.org/3/search/movie?query=${keyword}`,
     {
@@ -64,7 +68,9 @@ export const searchMoviesByKeyword = async ({ keyword }) => {
         Authorization:
           "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmNzFkYzIxMmU5YTQ3MTE1YjMwZWRkM2RmMDgyNTM2MCIsInN1YiI6IjY1YzQwN2M4NzA2YjlmMDE3ZDJkNGRmZSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.9VC-s9dnO0bUB9BPpss1H3XXJtjEBTVo17HOPZThY20",
       },
+      signal: abortController.signal,
     }
   );
+  console.log(response.data.results);
   return response.data.results;
 };
