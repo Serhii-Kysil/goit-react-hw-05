@@ -1,12 +1,16 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import css from "./HomePageBtn.module.css";
 import { IoIosArrowRoundBack } from "react-icons/io";
+import { useRef } from "react";
 
 export default function HomePageBtn() {
+  const location = useLocation();
+  const backRef = useRef(location.state);
+
   return (
-    <NavLink to="/" className={css.link}>
+    <NavLink to={backRef.current ?? "/"} className={css.link}>
       <IoIosArrowRoundBack />
-      Back to home page
+      Go Back
     </NavLink>
   );
 }

@@ -18,8 +18,9 @@ const SearchForm = ({ onSubmit }) => {
       toast.error("EMPTY STRING!");
       return;
     }
+    searchParams.set("query", keyword);
+    setSearchParams(searchParams);
     try {
-      setSearchParams({ query: keyword });
       const response = await searchMoviesByKeyword({
         keyword,
         abortController: controller,
