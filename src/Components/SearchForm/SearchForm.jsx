@@ -10,9 +10,8 @@ const SearchForm = ({ onSubmit }) => {
   const [error, setError] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const controller = new AbortController();
-
   const handleSearch = async (e) => {
+    const controller = new AbortController();
     e.preventDefault();
     if (keyword.trim() === "") {
       toast.error("EMPTY STRING!");

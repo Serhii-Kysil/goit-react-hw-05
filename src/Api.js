@@ -14,7 +14,6 @@ export const getPopular = async ({ abortController }) => {
   console.log(response.data.results);
   return response.data.results;
 };
-getPopular();
 
 export const getMovieById = async ({ movieId, abortController }) => {
   const response = await axios.get(
