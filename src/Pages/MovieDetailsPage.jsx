@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useParams, Outlet } from "react-router-dom";
 import { getMovieById } from "../Api";
 import { ErrorMessage } from "../Components/ErrorMessage/ErrorMessage";
@@ -50,7 +50,9 @@ export default function MovieDetailsPage() {
 
           <AdditionalInfo />
 
-          <Outlet movieId={movieId} />
+          <Suspense fallback={<Loader />}>
+            <Outlet movieId={movieId} />
+          </Suspense>
         </div>
       )}
     </div>
