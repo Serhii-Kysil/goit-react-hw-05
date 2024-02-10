@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import SearchForm from "../Components/SearchForm/SearchForm";
 import { Loader } from "../Components/Loader/Loader";
 import { searchMoviesByKeyword } from "../Api";
@@ -9,14 +9,18 @@ import { MoviesList } from "../Components/MoviesList/MoviesList";
 const MoviesPage = () => {
   const [searchResults, setSearchResults] = useState([]);
   const [loading, setLoading] = useState(false);
-  const location = useLocation();
   const [error, setError] = useState(false);
   const controller = new AbortController();
 
-  useEffect(() => {
-    const searchParams = new URLSearchParams(location.search);
-    const query = searchParams.get("query");
+  const [params, setParams] = useSearchParams();
+  const query = params.get("query") ?? "";
 
+  const changeParams = (newParams) => {
+    params.set("query", newParams);
+    setParams(params);
+  };
+
+  useEffect(() => {
     const fetchSearchResults = async () => {
       if (query) {
         setLoading(true);
@@ -41,17 +45,12 @@ const MoviesPage = () => {
     return () => {
       controller.abort();
     };
-  }, [location.search]);
-
-  const handleSearchResult = (results) => {
-    setSearchResults(results);
-    setLoading(false);
-  };
+  }, [params]);
 
   return (
     <div>
       {error && <ErrorMessage />}
-      <SearchForm onSubmit={handleSearchResult} />
+      <SearchForm onSearch={changeParams} />
       {loading && <Loader />}
       <MoviesList films={searchResults} />
     </div>
