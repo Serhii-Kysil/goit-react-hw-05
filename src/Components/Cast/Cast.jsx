@@ -6,6 +6,8 @@ import { Loader } from "../Loader/Loader";
 import css from "./Cast.module.css";
 
 const Cast = () => {
+  const defaultImg =
+    "https://ireland.apollo.olxcdn.com/v1/files/0iq0gb9ppip8-UA/image;s=1000x700";
   const { movieId } = useParams();
   const [actors, setActors] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -46,7 +48,11 @@ const Cast = () => {
           <li key={actor.id} className={css.listItem}>
             <div className={css.box}>
               <img
-                src={`https://image.tmdb.org/t/p/w500${actor.profile_path}`}
+                src={
+                  actor.profile_path
+                    ? `https://image.tmdb.org/t/p/w500${actor.profile_path}`
+                    : defaultImg
+                }
                 alt="Actor photo"
                 width={100}
                 height={140}

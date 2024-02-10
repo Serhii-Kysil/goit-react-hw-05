@@ -1,11 +1,17 @@
 import css from "./MovieCard.module.css";
 
 export const MovieCard = ({ movie }) => {
+  const defaultImg =
+    "https://ireland.apollo.olxcdn.com/v1/files/0iq0gb9ppip8-UA/image;s=1000x700";
   return (
     <div className={css.card}>
       <img
-        src={`https://image.tmdb.org/t/p/w500${movie.backdrop_path}`}
-        alt="Movie backdrop"
+        src={
+          movie.backdrop_path
+            ? `https://image.tmdb.org/t/p/w500${movie.backdrop_path}`
+            : defaultImg
+        }
+        alt="poster"
         className={css.img}
       />
 
