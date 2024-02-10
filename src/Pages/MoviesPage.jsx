@@ -2,9 +2,9 @@ import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import SearchForm from "../Components/SearchForm/SearchForm";
 import { Loader } from "../Components/Loader/Loader";
-import { SearchList } from "../Components/SearchList/SearchList";
 import { searchMoviesByKeyword } from "../Api";
 import { ErrorMessage } from "../Components/ErrorMessage/ErrorMessage";
+import { MoviesList } from "../Components/MoviesList/MoviesList";
 
 const MoviesPage = () => {
   const [searchResults, setSearchResults] = useState([]);
@@ -53,7 +53,7 @@ const MoviesPage = () => {
       {error && <ErrorMessage />}
       <SearchForm onSubmit={handleSearchResult} />
       {loading && <Loader />}
-      <SearchList searchResults={searchResults} />
+      <MoviesList films={searchResults} />
     </div>
   );
 };

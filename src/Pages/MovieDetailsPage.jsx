@@ -51,7 +51,7 @@ export default function MovieDetailsPage() {
           <AdditionalInfo />
 
           <Suspense fallback={<Loader />}>
-            <Outlet movieId={movieId} />
+            <Outlet />
           </Suspense>
         </div>
       )}
